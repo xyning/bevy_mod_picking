@@ -51,6 +51,7 @@ pub struct PickingPluginsState {
     pub enable_interacting: bool,
     pub update_debug_cursor: bool,
     pub print_debug_events: bool,
+    pub enable_multiselect: bool,
 }
 
 impl Default for PickingPluginsState {
@@ -61,6 +62,7 @@ impl Default for PickingPluginsState {
             enable_interacting: true,
             update_debug_cursor: true,
             print_debug_events: true,
+            enable_multiselect: true,
         }
     }
 }

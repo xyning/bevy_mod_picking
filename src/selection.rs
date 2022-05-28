@@ -1,4 +1,5 @@
 use crate::PausedForBlockers;
+use crate::PickingPluginsState;
 use bevy::prelude::*;
 
 /// Tracks the current selection state to be used with change tracking in the events system. Meshes
@@ -28,6 +29,7 @@ pub struct NoDeselect;
 #[allow(clippy::too_many_arguments)]
 pub fn mesh_selection(
     paused: Option<Res<PausedForBlockers>>,
+    plugin_state: Res<PickingPluginsState>,
     mouse_button_input: Res<Input<MouseButton>>,
     touches_input: Res<Touches>,
     keyboard_input: Res<Input<KeyCode>>,
@@ -50,7 +52,10 @@ pub fn mesh_selection(
         }
     }
 
-    if keyboard_input.pressed(KeyCode::LControl) && keyboard_input.pressed(KeyCode::A) {
+    if keyboard_input.pressed(KeyCode::LControl)
+        && keyboard_input.pressed(KeyCode::A)
+        && plugin_state.enable_multiselect
+    {
         // The user has hit ctrl+a, select all the things!
         query_all.for_each_mut(|(mut selection, _)| {
             if !selection.selected {
@@ -62,7 +67,7 @@ pub fn mesh_selection(
         for (mut selection, interaction) in &mut query_all.iter_mut() {
             if selection.selected
                 && *interaction != Interaction::Clicked
-                && !keyboard_input.pressed(KeyCode::LControl)
+                && !(keyboard_input.pressed(KeyCode::LControl) && plugin_state.enable_multiselect)
             {
                 // In this case, the entity is currently marked as selected, but it was not clicked
                 // on (interaction), and lctrl was not being held, so it should be deselected.
