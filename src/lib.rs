@@ -48,6 +48,7 @@ pub struct PickingPluginsState {
     pub enable_picking: bool,
     pub enable_highlighting: bool,
     pub enable_interacting: bool,
+    pub enable_multiselect: bool,
 }
 
 impl Default for PickingPluginsState {
@@ -56,6 +57,7 @@ impl Default for PickingPluginsState {
             enable_picking: true,
             enable_highlighting: true,
             enable_interacting: true,
+            enable_multiselect: true,
         }
     }
 }
